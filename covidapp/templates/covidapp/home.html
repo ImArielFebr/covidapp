@@ -1,0 +1,63 @@
+{% extends "covidapp/base.html" %}
+    
+{% block content %}
+  <div class="container">
+  <div style="font-weight: bold; font-size: 36px;">
+    Scrapping Data
+  </div>
+  <div>
+      Input Kata Kunci & Jumlah Data
+      <br>
+      <form action="{% url 'scrap' %}" method="post" class="form-group">
+        {% csrf_token %}
+        <input type="text" id="kata" name="kata" placeholder="Input Kata">
+        <input type="text" id="jumlah" name="jumlah" placeholder="Input Jumlah Tweet">
+        <input type="submit" value="Ambil" class="btn btn-outline-secondary">
+      </form>
+      <br>
+      <form action="{% url 'ambil_all' %}" method="post" class="form-group">
+        {% csrf_token %}
+        <input type="submit" value="Tampilkan Hasil Scrapping" class="btn btn-outline-secondary">
+      </form>
+      {% if data %}
+        <div class="modal" id="CovModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Pesan Baru :)</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                {{ data }}
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      {% endif %} 
+        <table border='1' class="table table-dark table-hover table-bordered">
+              {% csrf_token %}
+              <tr>
+                  <th>ID</th>
+                  <th>Tweet</th>
+                  <th>Created At</th>
+                  <th>Username</th>
+              </tr>
+              {% for x in form %}
+              <tr>
+                  <td>{{ x.tweet_id }}</td>
+                  <td>{{ x.tweet_text }}</td>
+                  <td>{{ x.created_at }}</td>
+                  <td>{{ x.username }}</td>
+              </tr>
+              {% endfor %}
+        </table>
+      </div>
+        <br>
+    {% endblock %}
+</body>  
+</html> 

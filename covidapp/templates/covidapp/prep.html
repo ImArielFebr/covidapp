@@ -1,0 +1,102 @@
+{% extends "covidapp/base.html" %}
+
+{% block content %}
+
+<body>
+<div class="container">
+  <div style="font-weight: bold; font-size: 36px;">
+    Preprocessing
+  </div>
+  <div>
+    Menjalankan Langkah-langkah Preprocessing & Menampilkan Hasil Preprocessing
+  <br>
+  <table class="table table-light table-striped">
+    <thead>
+      <tr>
+        <th><form action="{% url 'tokenize' %}" method="post" class="form-group">
+          {% csrf_token %}
+          <input type="submit" value="Tokenize Tweet" class="btn btn-outline-secondary">
+        </form></th>
+        <th><form action="{% url 'normalize' %}" method="post" class="form-group">
+          {% csrf_token %}
+          <input type="submit" value="Normalisasi Tweet" class="btn btn-outline-secondary">
+        </form></th>
+        <th><form action="{% url 'removal' %}" method="post" class="form-group">
+          {% csrf_token %}
+          <input type="submit" value="Hapus Stopword" class="btn btn-outline-secondary">
+        </form></th>
+        <th><form action="{% url 'stem' %}" method="post" class="form-group">
+          {% csrf_token %}
+          <input type="submit" value="Stem Tweet" class="btn btn-outline-secondary">
+        </form></th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><form action="{% url 'ambil_token' %}" method="post" class="form-group">
+            {% csrf_token %}
+            <input type="submit" value="Tampilkan Hasil Tokenisasi" class="btn btn-outline-secondary">
+          </form> </td>
+          <td><form action="{% url 'ambil_normal' %}" method="post" class="form-group">
+            {% csrf_token %}
+            <input type="submit" value="Tampilkan Hasil Normalisasi" class="btn btn-outline-secondary">
+          </form> </td>
+          <td><form action="{% url 'ambil_remove' %}" method="post" class="form-group">
+            {% csrf_token %}
+            <input type="submit" value="Tampilkan Hasil Stopword Removal" class="btn btn-outline-secondary">
+          </form> </td>
+          <td><form action="{% url 'ambil_stem' %}" method="post" class="form-group">
+            {% csrf_token %}
+            <input type="submit" value="Tampilkan Hasil Stemming" class="btn btn-outline-secondary">
+          </form> </td>
+
+        </tr>
+      </tbody>
+    </table>
+  {% if data %}
+    
+    <div class="modal" id="CovModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Pesan Baru :)</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            {{ data }}
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  {% endif %}     
+    <br>
+    <table class="table table-dark table-hover table-bordered">
+      <thead>
+        <tr>
+          <th>Tweet ID</th>
+          <th>Tweet</th>
+        </tr>
+      </thead>
+      <tbody>
+      {% if tabel %}  
+      {% for i in tabel %}
+        <tr>
+          <td>{{i.tweet_id}}</td>
+          <td>{{i.tweet_text}}</td>
+        </tr>
+      {% endfor %}
+      {% endif %}
+      </tbody>
+    </table>
+</div>
+</div>
+    <br>
+    {% endblock %}
+</body>
+
+</html> 

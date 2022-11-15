@@ -1,0 +1,194 @@
+{% extends "covidapp/base.html" %}
+
+{% block content %}
+<div class="container">
+    <div style="font-weight: bold; font-size: 36px;">
+        Evaluasi Hasil
+    </div>
+    <div>
+        
+        <table class="table table-light table-striped">
+            <tbody>
+                <td><form action="{% url 'dnsv' %}" method="post" class="form-group">
+                        {% csrf_token %}
+                        <input type="submit" value="Support Vector" class="btn btn-outline-secondary">
+                    </form></td>
+                <td><form action="{% url 'prefor' %}" method="post" class="form-group">
+                        {% csrf_token %}
+                        <input type="submit" value="Klasifikasi Data Uji" class="btn btn-outline-secondary">
+                    </form></td>
+                <td><form action="{% url 'klasif' %}" method="post" class="form-group">
+                        {% csrf_token %}
+                        <input type="submit" value="Evaluasi" class="btn btn-outline-secondary">
+                    </form>
+                </td>
+            </tbody>
+        </table>
+        {% if denvec %}
+        <div style="font-weight: bold; font-size: 20px;">
+            Support Vector
+        </div>
+        {{ denvec | safe }}
+        {% endif %}
+
+        {% if predf %}
+        <div style="font-weight: bold; font-size: 20px;">
+            Klasifikasi Data Uji
+        </div>
+        {{ predf | safe }}
+        {% endif %}
+        {% if b_linear %}
+        Penghitungan Klasifikasi yang meliputi Skor Akurasi, Skor Prediksi, F-score, Recall score & jumlah support test
+        <br>
+        Jumlah Data Uji = <a style="font-weight: bold;">{{ test }}</a> data
+        <br>
+        <div style="font-weight: bold; font-size: 18px">
+            Linear SVM
+        </div>
+        <div>
+            {{ b_linear }}
+        </div>
+        Nilai Akurasi:
+        <a style="font-weight: bold;">
+             {{ c_linear }} %
+        </a>
+        <table border='2' class="table table-dark table-hover table-bordered">
+            {% csrf_token %}
+            <tr>
+                <th>Sentimen</th>
+                <th>Precision (%)</th>
+                <th>Recall (%)</th>
+                <th>F-Measure (%)</th>
+                <th>Jumlah Data Prediksi</th>
+            </tr>
+            <tr>
+                <td>Percaya</td>
+                <td>{{ percaya_linear_p }}</td>
+                <td>{{ percaya_linear_r }}</td>
+                <td>{{ percaya_linear_f }}</td>
+                <td>{{ percaya_linear_sup }}</td>
+            </tr>
+            <tr>
+                <td>Tidak Percaya</td>
+                <td>{{ tidak_linear_p }}</td>
+                <td>{{ tidak_linear_r }}</td>
+                <td>{{ tidak_linear_f }}</td>
+                <td>{{ tidak_linear_sup }}</td>
+            </tr>
+        </table>
+        <img src='data:image/png;base64,{{ gralin }}'>
+        <br><br>
+        <div style="font-weight: bold; font-size: 18px">
+            Polinomial SVM
+        </div>
+        <div style="font-weight: bold;">
+            {{ b_poly }}
+        </div>
+        Nilai Akurasi:
+        <a style="font-weight: bold;">
+            {{ c_poly }} %
+        </a>
+        <table border='2' class="table table-dark table-hover table-bordered">
+            {% csrf_token %}
+            <tr>
+                <th>Sentimen</th>
+                <th>Precision (%)</th>
+                <th>Recall (%)</th>
+                <th>F-Measure (%)</th>
+                <th>Jumlah Data Uji</th>
+            </tr>
+            <tr>
+                <td>Percaya</td>
+                <td>{{ percaya_poly_p }}</td>
+                <td>{{ percaya_poly_r }}</td>
+                <td>{{ percaya_poly_f }}</td>
+                <td>{{ percaya_poly_sup }}</td>
+            </tr>
+            <tr>
+                <td>Tidak Percaya</td>
+                <td>{{ tidak_poly_p }}</td>
+                <td>{{ tidak_poly_r }}</td>
+                <td>{{ tidak_poly_f }}</td>
+                <td>{{ tidak_poly_sup }}</td>
+            </tr>
+        </table>
+        <img src='data:image/png;base64,{{ grapoly }}'>
+
+        <br><br>
+        <div style="font-weight: bold; font-size: 18px">
+            Radial Basis Function SVM
+        </div>
+        <div style="font-weight: bold;">
+            {{ b_rbf }}
+        </div>
+        Nilai Akurasi:
+        <a style="font-weight: bold;">
+            {{ c_rbf }} %
+        </a>
+        <table border='2' class="table table-dark table-hover table-bordered">
+            {% csrf_token %}
+            <tr>
+                <th>Sentimen</th>
+                <th>Precision (%)</th>
+                <th>Recall (%)</th>
+                <th>F-Measure (%)</th>
+                <th>Jumlah Data Uji</th>
+            </tr>
+            <tr>
+                <td>Percaya</td>
+                <td>{{ percaya_rbf_p }}</td>
+                <td>{{ percaya_rbf_r }}</td>
+                <td>{{ percaya_rbf_f }}</td>
+                <td>{{ percaya_rbf_sup }}</td>
+            </tr>
+            <tr>
+                <td>Tidak Percaya</td>
+                <td>{{ tidak_rbf_p }}</td>
+                <td>{{ tidak_rbf_r }}</td>
+                <td>{{ tidak_rbf_f }}</td>
+                <td>{{ tidak_rbf_sup }}</td>
+            </tr>
+        </table>
+        <img src='data:image/png;base64,{{ grarbf }}'>
+
+        <br><br>
+        <div style="font-weight: bold; font-size: 18px">
+            Sigmoid SVM
+        </div>
+        <div style="font-weight: bold;">
+            {{ b_sigmoid }}
+        </div>
+        Nilai Akurasi:
+        <a style="font-weight: bold;">
+            {{ c_sigmoid }} %
+        </a>
+        <table border='2' class="table table-dark table-hover table-bordered">
+            {% csrf_token %}
+            <tr>
+                <th>Sentimen</th>
+                <th>Precision (%)</th>
+                <th>Recall (%)</th>
+                <th>F-Measure (%)</th>
+                <th>Jumlah Data Uji</th>
+            </tr>
+            <tr>
+                <td>Percaya</td>
+                <td>{{ percaya_sigmoid_p }}</td>
+                <td>{{ percaya_sigmoid_r }}</td>
+                <td>{{ percaya_sigmoid_f }}</td>
+                <td>{{ percaya_sigmoid_sup }}</td>
+            </tr>
+            <tr>
+                <td>Tidak Percaya</td>
+                <td>{{ tidak_sigmoid_p }}</td>
+                <td>{{ tidak_sigmoid_r }}</td>
+                <td>{{ tidak_sigmoid_f }}</td>
+                <td>{{ tidak_sigmoid_sup }}</td>
+            </tr>
+        </table>
+        <img src='data:image/png;base64,{{ grasig }}'>
+        <br>
+        
+        {% endif %}
+</div>
+{% endblock %}

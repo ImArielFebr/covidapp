@@ -1,0 +1,59 @@
+{% extends "covidapp/base.html" %}
+
+{% block content %}
+<div class="container">
+<div style="font-weight: bold; font-size: 36px;">
+  Data Latih & Data Uji
+</div>
+<div>
+    Menampilkan Data Dari Tabel Data Latih & Data Uji
+    <br>
+    <table class="table table-light table-striped">
+        <thead>
+          <tr>
+            <th>Data Latih</th>
+            <th>Data Uji</th>
+          </tr>
+        </thead>
+        <tbody>
+            <tr>
+              <td><form action="{% url 'latih' %}" method="post" class="form-group">
+                {% csrf_token %}
+                <input type="submit" value="Tampilkan" class="btn btn-outline-secondary">
+              </form> </td>
+              <td><form action="{% url 'uji' %}" method="post" class="form-group">
+                {% csrf_token %}
+                <input type="submit" value="Tampilkan" class="btn btn-outline-secondary">
+              </form> </td>
+              <td><form action="{% url 'del' %}" method="post" class="form-group">
+                {% csrf_token %}
+                <input type="submit" value="Eliminasi Data Uji" class="btn btn-danger">
+              </form></td>
+            </tr>
+          </tbody>
+        </table>
+        <a style="font-weight: bold">{{ enti }}</a><br>
+        <a>Jumlah data = {{ leng }}</a>
+        <br>
+    <table border='1' class="table table-dark table-hover table-bordered">
+        <tr>
+            <th>ID</th>
+            <th>Tweet</th>
+            <th>Label</th>
+            <th>Tanggal</th>
+        </tr>
+        {% for x in form %}
+            <tr>
+                <td><input type="text" id="tweet_id" name="tweet_id" style="color: white;" value="{{ x.tweet_id }}" readonly></td>
+                <td>{{ x.tweet_text }}</td>
+                <td>{{ x.label }}</td>
+                <td>{{ x.created_at }}
+                </td>
+                     
+            </tr>
+
+        {% endfor %}
+    </table>
+  </div>
+</div>
+{% endblock %}

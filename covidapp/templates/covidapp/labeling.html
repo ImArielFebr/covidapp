@@ -1,0 +1,68 @@
+{% extends "covidapp/base.html" %}
+
+{% block content %}
+<div class="container">
+<div style="font-weight: bold; font-size: 36px;">
+  Labeling Data
+</div>
+<div>
+    Menentukan Sentimen Secara Manual
+    <br>
+    <table class="table table-light table-striped">
+        <thead>
+          <tr>
+            <th>Belum diberi parameter</th>
+            <th>Telah diberi parameter</th>
+          </tr>
+        </thead>
+        <tbody>
+            <tr>
+              <td><form action="{% url 'unlabeled' %}" method="post" class="form-group">
+                {% csrf_token %}
+                <input type="submit" value="Tampilkan" class="btn btn-outline-secondary">
+              </form> </td>
+              <td><form action="{% url 'labeled' %}" method="post" class="form-group">
+                {% csrf_token %}
+                <input type="submit" value="Tampilkan" class="btn btn-outline-secondary">
+              </form> </td>
+            </tr>
+          </tbody>
+        </table>
+
+    <table border='1' class="table table-dark table-hover table-bordered">
+        <tr>
+            <th>ID</th>
+            <th>Tweet</th>
+            <th>Sentimen</th>
+            <th>Label</th>
+            <th>Action</th>
+        </tr>
+        {% for x in form %}
+        <form action="{% url 'savelabel' %}" method="post">
+            {% csrf_token %}
+            <tr>
+                <td><input type="text" id="tweet_id" name="tweet_id" style="color: white;" value="{{ x.tweet_id }}" readonly></td>
+                <td>{{ x.tweet_text }}</td>
+                <td>{{ x.label }}</td>
+                <td><select id="sentimen" name="sentimen" class="selectpicker show-menu-arrow" data-style="btn-danger">
+                    <option value="1" {% if x.label == '1' %}selected{% else %} {% endif %}>Percaya</option>
+                    <option value="-1" {% if x.label == '-1' %}selected{% else %} {% endif %}>Tidak Percaya</option>
+                </select>
+                </td>
+                <td><input type="submit" class="btn btn-primary " value="Simpan">
+                </form>
+                <br><br>
+                <form action="{% url 'hapus' %}" method="post">
+                  {% csrf_token %}
+                  <input type="hidden" id="tweet_id" name="tweet_id" value="{{ x.tweet_id }}">
+                  <input type="submit" class="btn btn-danger " value="Hapus">
+                </form>
+                </td>
+      
+            </tr>
+
+        {% endfor %}
+    </table>
+  </div>
+</div>
+{% endblock %}
